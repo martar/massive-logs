@@ -24,7 +24,7 @@ public class LogEntryAnalizer {
     public static void main(String[] args) throws Exception {
 
 	if (args.length != 2) {
-		System.err.println("Usage: loganalyzer <in> <out>");
+		System.err.println("Usage: loganalyzer <in> <out> (<depth>)");
 		System.exit(2);
 	}
 
@@ -43,5 +43,14 @@ public class LogEntryAnalizer {
         }catch(IOException e){
             System.err.println(e.getMessage());
         }
+        
+        //TODO 
+        
+        // Drzewo
+  		TreeNode root = WebSiteTree.makeStatsFromOutputFile(args[1]);
+    	root.showTree(args.length == 3 ? Integer.parseInt(args[2]) : 10);
+                
+        
+        
     }
 }
