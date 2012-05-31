@@ -2,15 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package massive.logs.simple;
+package massive.logs.sort;
 
-import java.io.File;
 import java.io.IOException;
 import massive.logs.Map;
 import massive.logs.Reduce;
 import massive.logs.WordCount;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -26,7 +24,7 @@ public class LogEntryAnalizer {
     public static void main(String[] args) throws Exception {
 
 	if (args.length != 2) {
-		System.err.println("Usage: loganalyzer <in> <out> (<depth>)");
+		System.err.println("Usage: loganalyzer <in> <out>");
 		System.exit(2);
 	}
 
@@ -45,22 +43,5 @@ public class LogEntryAnalizer {
         }catch(IOException e){
             System.err.println(e.getMessage());
         }
-        
-        /**
-         * 
-         * we need to copy the output file to the local filesystem (on the hadoop machine)
-         * because then, we build tree based on that file
-         */
-        FileSystem hdfs = FileSystem.get(conf);
-        Path srcPath = new Path(args[1]+"/part-00000");
-        File tmpFile = File.createTempFile("hadoop", "tmp");
-        Path dstPath = new Path(tmpFile.getAbsolutePath());
-        hdfs.copyToLocalFile(srcPath, dstPath);
-
-        TreeNode root = WebSiteTree.makeStatsFromOutputFile(tmpFile.getAbsolutePath());
-    	root.showTree(args.length == 3 ? Integer.parseInt(args[2]) : 10);
-                
-        
-        
     }
 }
