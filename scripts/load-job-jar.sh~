@@ -43,10 +43,10 @@ case $job_start in
 	#read -p "Main class: "	main
 	#read -p "Arguments: " args
 	read -p "output: " out
-	args="loganalizer /user/hadoop-user/input/logs/other_vhost_access.log /user/hadoop-user/output/$out"
+	args=loganalizer /user/hadoop-user/input/logs/other_vhost_access.log /user/hadoop-user/output/$out
 echo $args
 	main=massive.logs.simple.LogEntryAnalizer
-	echo "./start-job.sh -j $jar_file -h $address -u $user -m $main -a $args" | /bin/sh > out
+	echo "./start-job.sh -j $jar_file -h $address -u $user -m $main -a '$args'" | /bin/sh > out
 	echo $out
 	;;
 *)

@@ -19,7 +19,7 @@ do
 	esac
 done
 
-host=192.168.230.140
+address=192.168.230.140
 user=hadoop-user
 jar_name=massive-logs.jar
 args="loganalizer /user/hadoop-user/input/logs/other_vhost_access.log /user/hadoop-user/output/$out"
