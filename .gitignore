@@ -4,3 +4,4 @@
 /massive-logs/manifest.mf
 /massive-logs/build/
 /massive-logs/dist/
+*.sh~
