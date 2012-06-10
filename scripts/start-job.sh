@@ -1,50 +1,57 @@
 #!/bin/bash
-jar_name=""
-host=""
-user=""
-main=""
-args=""
+
+source ./hadoop.cfg
+
 while getopts "j:c:u:a:m:h" Option
 do
 	case $Option in
-	j) jar_name=$OPTARG;;
+	j) jar_file=$OPTARG;;
 	c) host=$OPTARG;;
 	u) user=$OPTARG;;
 	a) args=$OPTARG;;
 	m) main=$OPTARG;;
-	h)
-	echo "Usage: $0 [-j jar] [-c cluster_address] [-u user_name] [-a args] [-m main_class_name]" 
+	h) echo "Usage: $0 [-j jar] [-c cluster_address] [-u user_name] [-a args] [-m main_class_name]" 
 	exit
 	;;
 	esac
 done
 
-host=192.168.230.140
-user=hadoop-user
-jar_name=massive-logs.jar
-args="loganalizer /user/hadoop-user/input/logs/other_vhost_access.log /user/hadoop-user/output/$out"
-echo $args
-main=massive.logs.simple.LogEntryAnalizer
 
-if [ -z $jar_name ];then
-	read -p "Jar name: " jar_name
-fi
 
 if [ -z $host ]; then
-	read -p "Claster address: " host
+	read -p "Claster address [$default_address] : " host
+	if [ -z $user ]; then
+	    host=$default_address
+	fi
 fi
 
 if [ -z $user ]; then
-	read -p "Claster user: " user
+	read -p "Cluster user name [$default_user] : " user
+	if [ -z $user ]; then
+	    user=$default_user
+	fi
+fi
+
+if [ -z $jar_file ]; then
+	read -p "jar file [$default_jar_file] : " jar_file
+	if [ -z $jar_file ]; then
+	    jar_file=$default_jar_file
+	fi
 fi
 
 if [ -z $main ];then
-	read -p "Main class name: " main
+	read -p "Main class name [$default_main]: " main
+	if [ -z $main ]; then
+	    main=$default_main
+	fi
 fi
 
 if [ -z $args ];then
-	read -p "Arguments: " args
+	read -p "Arguments [$default_args]: " args
+	if [ -z $args ]; then
+	    args=$default_args
+	fi
 fi
 
-echo "hadoop/bin/hadoop jar hadoop/jars/$jar_name $main $args" | ssh $user@$host > out
+echo "hadoop/bin/hadoop jar hadoop/jars/$jar_file $main $args" | ssh $user@$host > out
 echo $out

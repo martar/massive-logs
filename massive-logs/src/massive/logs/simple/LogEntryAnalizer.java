@@ -25,7 +25,7 @@ public class LogEntryAnalizer {
     
     public static void main(String[] args) throws Exception {
 
-	if (args.length != 2) {
+	if (args.length != 2 && args.length != 3) {
 		System.err.println("Usage: loganalyzer <in> <out> (<depth>)");
 		System.exit(2);
 	}
