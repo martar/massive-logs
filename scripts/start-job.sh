@@ -53,5 +53,6 @@ if [ -z $args ];then
 	fi
 fi
 
-echo "hadoop/bin/hadoop jar hadoop/jars/$jar_file $main $args" | ssh $user@$host > out
-echo $out
+echo "hadoop/bin/hadoop jar hadoop/jars/$jar_file $main $args" | ssh $user@$host > tmp_script_out
+cat tmp_script_out
+rm -f tmp_script_out

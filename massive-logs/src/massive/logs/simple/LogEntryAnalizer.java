@@ -25,10 +25,10 @@ public class LogEntryAnalizer {
     
     public static void main(String[] args) throws Exception {
 
-	if (args.length != 2 && args.length != 3) {
-		System.err.println("Usage: loganalyzer <in> <out> (<depth>)");
-		System.exit(2);
-	}
+		if (args.length != 2 && args.length != 3) {
+			System.err.println("Usage: loganalyzer <in> <out> (<depth>)");
+			System.exit(2);
+		}
 
         JobConf conf = new JobConf(LogEntryAnalizer.class);
         conf.setJobName("loganalizer");
@@ -38,6 +38,8 @@ public class LogEntryAnalizer {
         conf.setReducerClass(LogEntryReducer.class);
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
+        FileSystem hdfs = FileSystem.get(conf);
+        hdfs.delete(new Path(args[1]), true);
         FileInputFormat.setInputPaths(conf, new Path(args[0]));
         FileOutputFormat.setOutputPath(conf, new Path(args[1]));
         try{
@@ -51,7 +53,6 @@ public class LogEntryAnalizer {
          * we need to copy the output file to the local filesystem (on the hadoop machine)
          * because then, we build tree based on that file
          */
-        FileSystem hdfs = FileSystem.get(conf);
         Path srcPath = new Path(args[1]+"/part-00000");
         File tmpFile = File.createTempFile("hadoop", "tmp");
         Path dstPath = new Path(tmpFile.getAbsolutePath());
